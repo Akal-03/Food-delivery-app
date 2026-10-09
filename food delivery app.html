@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YummyKart - Food Delivery</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #fffaf0;
+    color: #333;
+}
+
+header {
+    background: #176b45;
+    color: white;
+    padding: 18px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+header h1 {
+    font-size: 28px;
+}
+
+header button {
+    background: #ffb347;
+    color: #222;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.hero {
+    text-align: center;
+    padding: 35px 15px;
+    background: #e3f4e8;
+}
+
+.hero h2 {
+    font-size: 30px;
+    margin-bottom: 10px;
+    color: #176b45;
+}
+
+.hero p {
+    margin-bottom: 20px;
+}
+
+#search {
+    width: min(90%, 420px);
+    padding: 12px;
+    border: 1px solid #bbb;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+
+.filters button {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 20px;
+    background: #176b45;
+    color: white;
+    cursor: pointer;
+}
+
+.filters button:hover {
+    background: #0d4d30;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.section-title {
+    margin-bottom: 20px;
+    color: #176b45;
+}
+
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.food-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 12px #00000015;
+    transition: 0.2s;
+}
+
+.food-card:hover {
+    transform: translateY(-4px);
+}
+
+.food-card img {
+    width: 100%;
+    height: 165px;
+    object-fit: cover;
+}
+
+.food-info {
+    padding: 15px;
+}
+
+.food-info h3 {
+    margin-bottom: 8px;
+}
+
+.food-info p {
+    margin-bottom: 12px;
+    color: #176b45;
+    font-weight: bold;
+}
+
+.food-info button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background: #ff9f43;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.food-info button:hover {
+    background: #ffb76b;
+}
+
+.cart-box, .payment-box {
+    background: white;
+    padding: 22px;
+    border-radius: 12px;
+    margin-top: 30px;
+    box-shadow: 0 3px 12px #00000012;
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    border-bottom: 1px solid #eee;
+    flex-wrap: wrap;
+}
+
+.quantity button, .remove-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.quantity button {
+    background: #dcefe2;
+}
+
+.remove-btn {
+    background: #ffe0dc;
+    color: #a12618;
+}
+
+.total {
+    text-align: right;
+    font-size: 21px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.payment-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin: 18px 0;
+}
+
+.payment-options label {
+    background: #f5f8f5;
+    padding: 13px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.place-order {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: #176b45;
+    color: white;
+    border-radius: 7px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+.place-order:hover {
+    background: #0d4d30;
+}
+
+footer {
+    text-align: center;
+    background: #176b45;
+    color: white;
+    padding: 20px;
+    margin-top: 40px;
+}
+
+/* LOGIN AND REGISTER */
+
+.auth-page {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #176b45, #8bcf9c);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.auth-card {
+    background: white;
+    width: 100%;
+    max-width: 420px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 30px #00000025;
+}
+
+.auth-card h1 {
+    text-align: center;
+    color: #176b45;
+    margin-bottom: 8px;
+}
+
+.auth-card .subtitle {
+    text-align: center;
+    color: #777;
+    margin-bottom: 22px;
+}
+
+.auth-card label {
+    display: block;
+    margin: 12px 0 6px;
+    font-weight: bold;
+}
+
+.auth-card input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+.auth-card .submit-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 13px;
+    border: none;
+    border-radius: 7px;
+    background: #176b45;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.auth-card .switch-text {
+    text-align: center;
+    margin-top: 18px;
+}
+
+.auth-card .switch-text button {
+    background: none;
+    border: none;
+    color: #176b45;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.message {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #b42318;
+    text-align: center;
+}
+
+.hidden {
+    display: none !important;
+}
+
+@media (max-width: 600px) {
+    header {
+        justify-content: center;
+        text-align: center;
+    }
+
+    .hero h2 {
+        font-size: 24px;
+    }
+
+    .container {
+        width: 94%;
+    }
+
+    .auth-card {
+        padding: 22px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- REGISTER PAGE -->
+
+<div id="registerPage" class="auth-page">
+    <div class="auth-card">
+        <h1>🍔 YummyKart</h1>
+        <p class="subtitle">Create your account to get started!</p>
+
+        <form onsubmit="registerUser(event)">
+            <label for="regName">Full Name</label>
+            <input type="text" id="regName" placeholder="Enter your full name" required>
+
+            <label for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" placeholder="Enter your email" required>
+
+            <label for="regUsername">Username</label>
+            <input type="text" id="regUsername" placeholder="Choose a username" required minlength="3">
+
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" placeholder="Create a password" required minlength="6">
+
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="Re-enter your password" required minlength="6">
+
+            <button class="submit-btn" type="submit">Create Account</button>
+            <p id="registerMessage" class="message" role="status"></p>
+        </form>
+
+        <p class="switch-text">
+            Already have an account?
+            <button type="button" onclick="showLogin()">Login</button>
+        </p>
+    </div>
+</div>
+
+<!-- LOGIN PAGE -->
+
+<div id="loginPage" class="auth-page hidden">
+    <div class="auth-card">
+        <h1>🍔 YummyKart</h1>
+        <p class="subtitle">Welcome back! Please login.</p>
+
+        <form onsubmit="loginUser(event)">
+            <label for="loginIdentity">Username or Email</label>
+            <input type="text" id="loginIdentity" placeholder="Enter username or email" required>
+
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" placeholder="Enter your password" required>
+
+            <button class="submit-btn" type="submit">Login</button>
+            <p id="loginMessage" class="message" role="status"></p>
+        </form>
+
+        <p class="switch-text">
+            Don't have an account?
+            <button type="button" onclick="showRegister()">Register</button>
+        </p>
+    </div>
+</div>
+
+<!-- MAIN WEBSITE -->
+
+<div id="mainPage" class="hidden">
+
+<header>
+    <h1>🍔 YummyKart</h1>
+    <div>
+        <span id="welcomeUser">Welcome!</span>
+        <button onclick="logout()">Logout</button>
+    </div>
+</header>
+
+<section class="hero">
+    <h2>Delicious Food, Delivered Fresh!</h2>
+    <p>Find your favourite food and order it easily.</p>
+    <input type="text" id="search" placeholder="🔍 Search food..." oninput="displayFoods()">
+</section>
+
+<div class="filters">
+    <button onclick="setMood('all')">Show All</button>
+    <button onclick="setMood('breakfast')">Breakfast</button>
+    <button onclick="setMood('hungry')">Hungry</button>
+    <button onclick="setMood('comfort')">Comfort Food</button>
+</div>
+
+<main class="container">
+    <h2 class="section-title">🍽️ Our Menu</h2>
+    <div id="foodGrid" class="food-grid"></div>
+
+    <section class="cart-box" id="cart">
+        <h2 class="section-title">🛒 Your Cart</h2>
+        <div id="cartItems">Your cart is empty.</div>
+        <div class="total">Total: ₹<span id="cartTotal">0</span></div>
+    </section>
+
+    <section class="payment-box">
+        <h2 class="section-title">💳 Payment Method</h2>
+
+        <div class="payment-options">
+            <label><input type="radio" name="payment" value="Cash on Delivery" checked> Cash on Delivery</label>
+            <label><input type="radio" name="payment" value="UPI"> UPI</label>
+            <label><input type="radio" name="payment" value="Google Pay"> Google Pay</label>
+            <label><input type="radio" name="payment" value="PhonePe"> PhonePe</label>
+            <label><input type="radio" name="payment" value="Credit/Debit Card"> Credit/Debit Card</label>
+            <label><input type="radio" name="payment" value="Net Banking"> Net Banking</label>
+        </div>
+
+        <button class="place-order" onclick="placeOrder()">Place Order</button>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 YummyKart | Fresh Food, Happy Life ❤️</p>
+</footer>
+
+</div>
+
+<script>
+const USERS_KEY = "yummykart_users";
+
+let currentUser = null;
+let cart = [];
+let currentMood = "all";
+
+const foods = [
+    {
+        id: 1,
+        name: "Chicken Biryani",
+        price: 180,
+        mood: "hungry",
+        image: "https://images.unsplash.com/photo-1563379091339-03246963d96c?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 2,
+        name: "Paneer Pizza",
+        price: 220,
+        mood: "comfort",
+        image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 3,
+        name: "Veg Burger",
+        price: 100,
+        mood: "hungry",
+        image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 4,
+        name: "French Fries",
+        price: 80,
+        mood: "hungry",
+        image: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 5,
+        name: "Chocolate Cake",
+        price: 90,
+        mood: "comfort",
+        image: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 6,
+        name: "Pancakes",
+        price: 120,
+        mood: "breakfast",
+        image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 7,
+        name: "Sandwich",
+        price: 90,
+        mood: "breakfast",
+        image: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80"
+    },
+    {
+        id: 8,
+        name: "Ice Cream",
+        price: 70,
+        mood: "comfort",
+        image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80"
+    }
+];
+
+function getUsers() {
+    try {
+        const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
+        return Array.isArray(users) ? users : [];
+    } catch {
+        return [];
+    }
+}
+
+function saveUsers(users) {
+    localStorage.setItem(USERS_KEY, JSON.stringify(users));
+}
+
+function showRegister() {
+    document.getElementById("registerPage").classList.remove("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("registerMessage").textContent = "";
+    document.getElementById("loginMessage").textContent = "";
+}
+
+function showLogin() {
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("registerPage").classList.add("hidden");
+    document.getElementById("registerMessage").textContent = "";
+    document.getElementById("loginMessage").textContent = "";
+}
+
+function registerUser(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("regName").value.trim();
+    const email = document.getElementById("regEmail").value.trim().toLowerCase();
+    const username = document.getElementById("regUsername").value.trim();
+    const password = document.getElementById("regPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const message = document.getElementById("registerMessage");
+
+    if (password !== confirmPassword) {
+        message.textContent = "Passwords do not match!";
+        return;
+    }
+
+    const users = getUsers();
+
+    const alreadyExists = users.some(user =>
+        user.email.toLowerCase() === email ||
+        user.username.toLowerCase() === username.toLowerCase()
+    );
+
+    if (alreadyExists) {
+        message.textContent = "Email or username already exists!";
+        return;
+    }
+
+    users.push({
+        name: name,
+        email: email,
+        username: username,
+        password: password
+    });
+
+    try {
+        saveUsers(users);
+    } catch {
+        message.textContent = "Unable to save account in this browser.";
+        return;
+    }
+
+    document.getElementById("registerForm");
+    alert("Account created successfully! Please login.");
+
+    document.getElementById("loginIdentity").value = username;
+    document.getElementById("loginPassword").value = "";
+    document.getElementById("regName").value = "";
+    document.getElementById("regEmail").value = "";
+    document.getElementById("regUsername").value = "";
+    document.getElementById("regPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+
+    showLogin();
+}
+
+function loginUser(event) {
+    event.preventDefault();
+
+    const identity = document.getElementById("loginIdentity").value.trim().toLowerCase();
+    const password = document.getElementById("loginPassword").value;
+    const message = document.getElementById("loginMessage");
+
+    const user = getUsers().find(user =>
+        (user.username.toLowerCase() === identity ||
+         user.email.toLowerCase() === identity) &&
+        user.password === password
+    );
+
+    if (!user) {
+        message.textContent = "Invalid username/email or password!";
+        return;
+    }
+
+    currentUser = user;
+    cart = [];
+    document.getElementById("welcomeUser").textContent = "Welcome, " + user.name + "!";
+    document.getElementById("registerPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.add("hidden");
+    document.getElementById("mainPage").classList.remove("hidden");
+
+    displayFoods();
+    displayCart();
+}
+
+function logout() {
+    currentUser = null;
+    cart = [];
+    currentMood = "all";
+
+    document.getElementById("mainPage").classList.add("hidden");
+    document.getElementById("loginPage").classList.remove("hidden");
+    document.getElementById("loginIdentity").value = "";
+    document.getElementById("loginPassword").value = "";
+    document.getElementById("search").value = "";
+
+    displayCart();
+}
+
+function setMood(mood) {
+    currentMood = mood;
+    displayFoods();
+}
+
+function displayFoods() {
+    const grid = document.getElementById("foodGrid");
+    const search = document.getElementById("search").value.toLowerCase().trim();
+
+    const filteredFoods = foods.filter(food =>
+        (currentMood === "all" || food.mood === currentMood) &&
+        food.name.toLowerCase().includes(search)
+    );
+
+    if (filteredFoods.length === 0) {
+        grid.innerHTML = "<p>No food items found.</p>";
+        return;
+    }
+
+    grid.innerHTML = filteredFoods.map(food => `
+        <div class="food-card">
+            <img src="${food.image}" alt="${food.name}"
+                 onerror="this.style.display='none'">
+            <div class="food-info">
+                <h3>${food.name}</h3>
+                <p>₹${food.price}</p>
+                <button onclick="addToCart(${food.id})">Add to Cart</button>
+            </div>
+        </div>
+    `).join("");
+}
+
+function addToCart(id) {
+    const food = foods.find(item => item.id === id);
+    const existing = cart.find(item => item.id === id);
+
+    if (existing) {
+        existing.quantity++;
+    } else {
+        cart.push({...food, quantity: 1});
+    }
+
+    displayCart();
+}
+
+function changeQuantity(id, change) {
+    const item = cart.find(item => item.id === id);
+
+    if (!item) return;
+
+    item.quantity += change;
+
+    if (item.quantity <= 0) {
+        cart = cart.filter(item => item.id !== id);
+    }
+
+    displayCart();
+}
+
+function removeFromCart(id) {
+    cart = cart.filter(item => item.id !== id);
+    displayCart();
+}
+
+function displayCart() {
+    const cartItems = document.getElementById("cartItems");
+    const cartTotal = document.getElementById("cartTotal");
+
+    if (!cart.length) {
+        cartItems.textContent = "Your cart is empty.";
+        cartTotal.textContent = "0";
+        return;
+    }
+
+    cartItems.innerHTML = cart.map(item => `
+        <div class="cart-item">
+            <div>
+                <strong>${item.name}</strong><br>
+                ₹${item.price} × ${item.quantity}
+            </div>
+            <div class="quantity">
+                <button onclick="changeQuantity(${item.id}, -1)">−</button>
+                <span>${item.quantity}</span>
+                <button onclick="changeQuantity(${item.id}, 1)">+</button>
+                <button class="remove-btn" onclick="removeFromCart(${item.id})">
+                    Remove
+                </button>
+            </div>
+        </div>
+    `).join("");
+
+    const total = cart.reduce((sum, item) =>
+        sum + item.price * item.quantity, 0
+    );
+
+    cartTotal.textContent = total;
+}
+
+function placeOrder() {
+    if (!currentUser) {
+        alert("Please login first.");
+        return;
+    }
+
+    if (!cart.length) {
+        alert("Please add food to your cart first!");
+        return;
+    }
+
+    const payment = document.querySelector('input[name="payment"]:checked').value;
+    const total = cart.reduce((sum, item) =>
+        sum + item.price * item.quantity, 0
+    );
+
+    alert(
+        "Order placed successfully! 🎉\n\n" +
+        "Customer: " + currentUser.name + "\n" +
+        "Payment: " + payment + "\n" +
+        "Total Amount: ₹" + total + "\n\n" +
+        "Thank you for ordering with YummyKart!"
+    );
+
+    cart = [];
+    displayCart();
+}
+
+displayFoods();
+</script>
+
+</body>
+</html>
